@@ -5,9 +5,14 @@ import {
   Truck, MessageSquare, Clipboard, Check, Star
 } from 'lucide-react';
 export const Home: React.FC = () => {
-  const { setActivePage, setShopCategory, products, toggleWishlist, wishlist } = useStore();
+  const { setActivePage, setShopCategory, products, toggleWishlist, wishlist, setSelectedProductId } = useStore();
   const [activeSlide, setActiveSlide] = useState(0);
   const [copiedCoupon, setCopiedCoupon] = useState<string | null>(null);
+
+  const handleProductClick = (id: string) => {
+    setSelectedProductId(id);
+    setActivePage('product-details');
+  };
 
   const couponsRef = useRef<HTMLDivElement>(null);
   const trustRef = useRef<HTMLDivElement>(null);
@@ -422,13 +427,18 @@ export const Home: React.FC = () => {
               </button>
               {/* Product Image */}
               <div 
-                onClick={() => { setShopCategory(prod.category); setActivePage('shop'); }}
+                onClick={() => handleProductClick(prod.id)}
                 style={{ height: '300px', width: '100%', overflow: 'hidden', cursor: 'pointer', backgroundImage: `url(${prod.image})`, backgroundSize: 'cover', backgroundPosition: 'center', flexShrink: 0 }}
               />
               {/* Info */}
               <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: '8px', flex: 1 }}>
                 <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>{prod.category}</span>
-                <h4 style={{ color: 'var(--text-primary)', fontSize: '1rem', margin: 0, fontWeight: 500, lineHeight: 1.3 }}>{prod.name}</h4>
+                <h4 
+                  onClick={() => handleProductClick(prod.id)}
+                  style={{ color: 'var(--text-primary)', fontSize: '1rem', margin: 0, fontWeight: 500, lineHeight: 1.3, cursor: 'pointer' }}
+                >
+                  {prod.name}
+                </h4>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '4px' }}>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
@@ -442,7 +452,7 @@ export const Home: React.FC = () => {
                     )}
                   </div>
                   <button 
-                    onClick={() => { setShopCategory(prod.category); setActivePage('shop'); }}
+                    onClick={() => handleProductClick(prod.id)}
                     style={{ background: 'var(--gold-primary)', border: 'none', borderRadius: '6px', padding: '6px 14px', color: '#fff', fontSize: '0.75rem', fontWeight: 600, cursor: 'pointer', letterSpacing: '0.04em' }}
                   >
                     View
@@ -486,12 +496,17 @@ export const Home: React.FC = () => {
                 <Heart size={18} fill={wishlist.includes(prod.id) ? 'var(--gold-primary)' : 'none'} color={wishlist.includes(prod.id) ? 'var(--gold-primary)' : '#999'} />
               </button>
               <div 
-                onClick={() => { setShopCategory(prod.category); setActivePage('shop'); }}
+                onClick={() => handleProductClick(prod.id)}
                 style={{ height: '300px', width: '100%', overflow: 'hidden', cursor: 'pointer', backgroundImage: `url(${prod.image})`, backgroundSize: 'cover', backgroundPosition: 'center', flexShrink: 0 }}
               />
               <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: '8px', flex: 1 }}>
                 <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>{prod.category}</span>
-                <h4 style={{ color: 'var(--text-primary)', fontSize: '1rem', margin: 0, fontWeight: 500, lineHeight: 1.3 }}>{prod.name}</h4>
+                <h4 
+                  onClick={() => handleProductClick(prod.id)}
+                  style={{ color: 'var(--text-primary)', fontSize: '1rem', margin: 0, fontWeight: 500, lineHeight: 1.3, cursor: 'pointer' }}
+                >
+                  {prod.name}
+                </h4>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '4px' }}>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
@@ -505,7 +520,7 @@ export const Home: React.FC = () => {
                     )}
                   </div>
                   <button 
-                    onClick={() => { setShopCategory(prod.category); setActivePage('shop'); }}
+                    onClick={() => handleProductClick(prod.id)}
                     style={{ background: 'var(--gold-primary)', border: 'none', borderRadius: '6px', padding: '6px 14px', color: '#fff', fontSize: '0.75rem', fontWeight: 600, cursor: 'pointer', letterSpacing: '0.04em' }}
                   >
                     View
@@ -548,12 +563,17 @@ export const Home: React.FC = () => {
                 <Heart size={18} fill={wishlist.includes(prod.id) ? 'var(--gold-primary)' : 'none'} color={wishlist.includes(prod.id) ? 'var(--gold-primary)' : '#999'} />
               </button>
               <div 
-                onClick={() => { setShopCategory(prod.category); setActivePage('shop'); }}
+                onClick={() => handleProductClick(prod.id)}
                 style={{ height: '300px', width: '100%', overflow: 'hidden', cursor: 'pointer', backgroundImage: `url(${prod.image})`, backgroundSize: 'cover', backgroundPosition: 'center', flexShrink: 0 }}
               />
               <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: '8px', flex: 1 }}>
                 <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>{prod.category}</span>
-                <h4 style={{ color: 'var(--text-primary)', fontSize: '1rem', margin: 0, fontWeight: 500, lineHeight: 1.3 }}>{prod.name}</h4>
+                <h4 
+                  onClick={() => handleProductClick(prod.id)}
+                  style={{ color: 'var(--text-primary)', fontSize: '1rem', margin: 0, fontWeight: 500, lineHeight: 1.3, cursor: 'pointer' }}
+                >
+                  {prod.name}
+                </h4>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '4px' }}>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
@@ -567,7 +587,7 @@ export const Home: React.FC = () => {
                     )}
                   </div>
                   <button 
-                    onClick={() => { setShopCategory(prod.category); setActivePage('shop'); }}
+                    onClick={() => handleProductClick(prod.id)}
                     style={{ background: 'var(--gold-primary)', border: 'none', borderRadius: '6px', padding: '6px 14px', color: '#fff', fontSize: '0.75rem', fontWeight: 600, cursor: 'pointer', letterSpacing: '0.04em' }}
                   >
                     View

@@ -138,6 +138,7 @@ export const ProductDetails: React.FC = () => {
   const calculatedPrice = getCustomPrice();
 
   const handleAddToCart = () => {
+    window.dispatchEvent(new CustomEvent('product-added', { detail: { image: product.image } }));
     addToCart({
       product: {
         id: product.id,

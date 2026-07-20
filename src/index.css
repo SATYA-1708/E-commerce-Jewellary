@@ -391,10 +391,40 @@ footer a:hover, footer button:hover { color: var(--gold-primary); transform: tra
 .navbar-logo-container:hover img { transform: rotate(-8deg) scale(1.08); box-shadow: 0 7px 18px rgba(131,39,41,.24); }
 button[title="Chat on WhatsApp"] { animation: softPulse 2.8s ease-in-out infinite; }
 
+@keyframes flyToCart {
+  0% { opacity: 1; transform: translate3d(0,0,0) scale(1) rotate(0deg); }
+  65% { opacity: 1; transform: translate3d(calc(var(--fly-x) * .85), calc(var(--fly-y) * .85 - 45px), 0) scale(.52) rotate(260deg); }
+  100% { opacity: 0; transform: translate3d(var(--fly-x), var(--fly-y), 0) scale(.12) rotate(360deg); }
+}
+@keyframes cartArrival { 0%,100% { transform: scale(1); } 35% { transform: scale(1.34) rotate(-8deg); color: var(--gold-primary); } 65% { transform: scale(.92) rotate(5deg); } }
+.cart-fly-jewel { position: fixed; z-index: 10000; width: 64px; height: 64px; object-fit: cover; border-radius: 50%; pointer-events: none; box-shadow: 0 10px 25px rgba(131,39,41,.28); animation: flyToCart .85s cubic-bezier(.22,.8,.25,1) forwards; }
+.cart-arrival { animation: cartArrival .55s cubic-bezier(.34,1.56,.64,1); }
+
+.quick-view-backdrop { position: fixed; inset: 0; z-index: 4000; display: grid; place-items: center; padding: 24px; background: rgba(25,16,16,.68); backdrop-filter: blur(9px); animation: revealUp .35s ease both; }
+.quick-view-dialog { position: relative; display: grid; grid-template-columns: minmax(280px,.95fr) 1.05fr; width: min(850px, 100%); overflow: hidden; border: 1px solid rgba(191,165,117,.42); border-radius: 14px; background: #fff; box-shadow: 0 30px 100px rgba(0,0,0,.35); }
+.quick-view-image-wrap { min-height: 460px; position: relative; overflow: hidden; background: radial-gradient(circle, #f8efdf, #ded0bd); perspective: 900px; }
+.quick-view-image-wrap img { width: 100%; height: 100%; position: absolute; object-fit: cover; transition: transform .8s cubic-bezier(.16,1,.3,1), filter .5s ease; }
+.quick-view-image-wrap:hover img { transform: scale(1.13) rotateY(-9deg) rotateX(3deg); filter: saturate(1.1) contrast(1.04); }
+.quick-view-image-wrap::after { content: ''; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(125deg, transparent 35%, rgba(255,255,255,.5) 50%, transparent 66%); transform: translateX(-120%); transition: transform 1s ease; }
+.quick-view-image-wrap:hover::after { transform: translateX(120%); }
+.quick-view-image-wrap span { position: absolute; bottom: 18px; left: 50%; transform: translateX(-50%); z-index: 1; padding: 7px 11px; color: #fff; background: rgba(23,16,16,.55); backdrop-filter: blur(4px); border-radius: 20px; font-size: .66rem; letter-spacing: .07em; white-space: nowrap; }
+.quick-view-copy { padding: 48px 42px 36px; display: flex; flex-direction: column; align-items: flex-start; }
+.quick-view-category { color: var(--gold-primary); text-transform: uppercase; font-size: .7rem; font-weight: 700; letter-spacing: .15em; }
+.quick-view-copy h2 { margin: 12px 0; font-size: clamp(1.75rem, 3vw, 2.45rem); font-weight: 400; line-height: 1.15; }
+.quick-view-rating { display: flex; align-items: center; gap: 5px; color: #b28628; font-size: .86rem; } .quick-view-rating small { color: var(--text-muted); }
+.quick-view-copy p { margin: 22px 0; color: var(--text-secondary); font-size: .9rem; line-height: 1.7; }
+.quick-view-copy > strong { color: var(--gold-primary); font-family: var(--font-serif); font-size: 1.65rem; }
+.quick-view-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }.quick-view-actions button { gap: 8px; }
+.quick-view-close { position: absolute; z-index: 3; top: 14px; right: 14px; display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; color: var(--text-primary); background: rgba(255,255,255,.88); box-shadow: 0 4px 14px rgba(0,0,0,.12); transition: transform .25s ease; }.quick-view-close:hover { transform: rotate(90deg) scale(1.08); }
+.magnetic-button { transition: transform .25s cubic-bezier(.16,1,.3,1), box-shadow .25s ease; }.magnetic-button:hover { transform: translateY(-4px) scale(1.03); }
+
 @media (max-width: 768px) {
   .hero-slider-container::before { inset: 10px; }
   .hero-slider-container::after { transform: scale(.7); transform-origin: top right; }
   .home-page::before, .home-page::after { display: none; }
+  .quick-view-backdrop { padding: 12px; align-items: end; }
+  .quick-view-dialog { grid-template-columns: 1fr; max-height: 92dvh; overflow-y: auto; border-radius: 14px 14px 0 0; }
+  .quick-view-image-wrap { min-height: 280px; }.quick-view-copy { padding: 28px 24px; }.quick-view-copy h2 { font-size: 1.7rem; }
 }
 
 /* Responsive layout foundation */

@@ -1,14 +1,16 @@
 import React, { useState, useMemo } from 'react';
 import { useStore } from '../context/StoreContext';
-import { Heart } from 'lucide-react';
+import { Heart, Eye, ShoppingBag, Star, X } from 'lucide-react';
+import type { Product } from '../data/products';
 
 
 export const Shop: React.FC = () => {
-  const { products, toggleWishlist, wishlist, setSelectedProductId, setActivePage, shopCategory, setShopCategory, searchQuery, setSearchQuery, categories: dbCategories } = useStore();
+  const { products, toggleWishlist, wishlist, setSelectedProductId, setActivePage, shopCategory, setShopCategory, searchQuery, setSearchQuery, categories: dbCategories, addToCart } = useStore();
 
   // Search & Filter state
   const [priceRange, setPriceRange] = useState<number>(5000);
   const [sortBy, setSortBy] = useState<string>('relevance');
+  const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
 
   // Filtered and sorted products
   const filteredProducts = useMemo(() => {
@@ -57,6 +59,16 @@ export const Shop: React.FC = () => {
   const handleProductClick = (id: string) => {
     setSelectedProductId(id);
     setActivePage('product-details');
+  };
+
+  const addQuickViewToCart = (product: Product) => {
+    window.dispatchEvent(new CustomEvent('product-added', { detail: { image: product.image } }));
+    addToCart({
+      product: { id: product.id, name: product.name, price: product.price, image: product.image, category: product.category },
+      quantity: 1,
+      selectedMetal: product.metalOptions[0] || product.specs.metal,
+      selectedStone: product.stoneOptions[0] || product.specs.stoneType
+    });
   };
 
   const categories = [
@@ -284,6 +296,12 @@ export const Shop: React.FC = () => {
                   >
                     <Heart size={16} fill={isWished ? 'var(--gold-primary)' : 'none'} />
                   </button>
+                  <button
+                    onClick={(e) => { e.stopPropagation(); setQuickViewProduct(p); }}
+                    className="quick-view-trigger"
+                    style={{ position: 'absolute', left: '50%', bottom: '14px', transform: 'translateX(-50%) translateY(12px)', opacity: 0, display: 'inline-flex', alignItems: 'center', gap: '7px', whiteSpace: 'nowrap', padding: '9px 15px', borderRadius: '20px', color: '#fff', background: 'var(--gold-primary)', cursor: 'pointer', fontSize: '0.7rem', fontWeight: 600, letterSpacing: '.08em', textTransform: 'uppercase', zIndex: 10, transition: 'all .35s cubic-bezier(.16,1,.3,1)' }}>
+                    <Eye size={14} /> Quick View
+                  </button>
                 </div>
 
                 {/* Info */}
@@ -325,6 +343,29 @@ export const Shop: React.FC = () => {
         </div>
       )}
 
+      {quickViewProduct && (
+        <div className="quick-view-backdrop" onClick={() => setQuickViewProduct(null)}>
+          <div className="quick-view-dialog" onClick={(e) => e.stopPropagation()}>
+            <button className="quick-view-close" onClick={() => setQuickViewProduct(null)} aria-label="Close quick view"><X size={20} /></button>
+            <div className="quick-view-image-wrap">
+              <img src={quickViewProduct.image} alt={quickViewProduct.name} />
+              <span>Move your cursor to explore</span>
+            </div>
+            <div className="quick-view-copy">
+              <span className="quick-view-category">{quickViewProduct.category}</span>
+              <h2>{quickViewProduct.name}</h2>
+              <div className="quick-view-rating"><Star size={15} fill="currentColor" /> {quickViewProduct.rating} <small>({quickViewProduct.reviewsCount} reviews)</small></div>
+              <p>{quickViewProduct.description}</p>
+              <strong>₹{quickViewProduct.price.toLocaleString('en-IN')}</strong>
+              <div className="quick-view-actions">
+                <button className="gold-button magnetic-button" onClick={() => addQuickViewToCart(quickViewProduct)}><ShoppingBag size={16} /> Add to Cart</button>
+                <button className="gold-button-outline" onClick={() => handleProductClick(quickViewProduct.id)}>View Details</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       <style>{`
         .shop-card:hover {
           box-shadow: 0 10px 30px rgba(131, 39, 41, 0.08);
@@ -332,6 +373,7 @@ export const Shop: React.FC = () => {
         .shop-card:hover .product-img {
           transform: scale(1.05);
         }
+        .shop-card:hover .quick-view-trigger { opacity: 1 !important; transform: translateX(-50%) translateY(0) !important; }
       `}</style>
     </div>
   );
