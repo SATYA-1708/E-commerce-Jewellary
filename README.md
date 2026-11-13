@@ -1,32 +1,34 @@
-# React + TypeScript + Vite
+# Jewellery E-commerce
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+A React and TypeScript storefront with Supabase integration, product imagery, database schema, and server-side API handlers for payment and email-related operations.
 
-Currently, two official plugins are available:
+## Features represented in source
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Storefront and customer account pages, including wishlist, address, and referral-related flows.
+- Product imagery under `src/assets/products/`.
+- Supabase schema in `supabase_schema.sql`.
+- Serverless handlers under `api/`, including PayU callback/hash and email modules.
 
-## React Compiler
+## Architecture and layout
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- `src/` — storefront UI and styling.
+- `api/` — server-side functions; payment secrets belong only in server configuration.
+- `supabase/` and `supabase_schema.sql` — database assets/schema.
+- `public/` — static assets.
 
-## Expanding the Oxlint configuration
+## Run locally
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```bash
+npm ci
+npm run dev
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+Run `npm run build` for a production build and `npm run preview` to inspect it. The package also defines a lint script.
+
+## Configuration and security
+
+Configure Supabase and payment/email settings in the server environment expected by the handlers. No `.env.example` is present. Do not expose PayU secrets in `VITE_` or other client-visible variables. Review the callback and hash validation before enabling live payments.
+
+## Deployment and next steps
+
+Vite is configured; the repository does not declare a specific production host. Document database setup and payment callback URLs. No repository-level `LICENSE` file was found, so reuse terms for project code are unspecified.
